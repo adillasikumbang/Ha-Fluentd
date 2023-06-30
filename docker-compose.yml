@@ -1,0 +1,37 @@
+version: '3'
+services:
+  ha_fluentd:
+    build: .
+    container_name: ha_fluentd
+    logging:
+      options:
+        max-size: 10M
+    network_mode: host
+    restart: always
+    volumes:
+      - ./config/ha_fluentd.conf:/fluentd/etc/fluent.conf
+      - /mnt/disks/sdb/logbuffer/ha:/fluentd/buffer
+
+  log_aggregators01:
+    build: .
+    container_name: log_aggregators01
+    logging:
+      options:
+        max-size: 10M
+    network_mode: host
+    restart: always
+    volumes:
+      - ./config/log_aggregators01.conf:/fluentd/etc/fluent.conf
+      - /mnt/disks/sdb/logbuffer/aggregator01:/fluentd/buffer
+
+  log_aggregators02:
+    build: .
+    container_name: log_aggregators02
+    logging:
+      options:
+        max-size: 10M
+    network_mode: host
+    restart: always
+    volumes:
+      - ./config/log_aggregators02.conf:/fluentd/etc/fluent.conf
+      - /mnt/disks/sdb/logbuffer/aggregator02:/fluentd/buffer
